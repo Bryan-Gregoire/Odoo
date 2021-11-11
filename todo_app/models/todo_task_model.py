@@ -6,7 +6,7 @@ class TodoTask(models.Model):
     #_description = ''
 
     name = fields.Char("name", required=True)
-    is_done = fields.Boolean("is done", )
+    is_done = fields.Boolean('is done')
     active = fields.Boolean("active", default=True)
     data_deadline = fields.Date("date deadline")
 
