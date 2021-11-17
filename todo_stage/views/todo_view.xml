@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- To-Do Task Form view -->
     <record id="view_tree_todo_task" model="ir.ui.view">
         <field name="name">To−do Task Tree</field>
         <field name="model">todo.task</field>
@@ -13,7 +14,79 @@
         </field>
     </record>
 
-    <record id="view_filter_todo_task"  model="ir.ui.view">
+    <act_window id="action_todo_task_button"
+                name="To-Do Tasks"
+                res_model="todo.task"
+                view_mode="tree,form"
+                domain="[('user__id','==',default__user__id)]"/>
+
+    <record id="view_form_todo_task" model="ir.ui.view">
+        <field name="name">To-do Task Form</field>
+        <field name="priority">15</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="do_clear_done" type="object"
+                            string="Clear Done" attrs="{'invisible':[('state', 'in', ['draft'])]}"/>
+
+                    <button name="set_to_open" type="object" attrs="{'invisible': [('state','!=', 'draft')]}"
+                            string="Set to open" class="oe_edit_only"/>
+
+                    <button name="set_to_closed" type="object"
+                            string="Set to closed" attrs="{'invisible': [('state','!=', 'open')]}"
+                            class="oe_edit_only"/>
+
+                    <button name="set_to_draft" type="object"
+                            string="Reset" attrs="{'invisible': [('state','=', 'draft')]}"
+                            class="oe_edit_only"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button class="oe_stat_button"
+                                type="action" icon="fa-tasks"
+                                name="%(action_todo_task_button)d"
+                                context="{'default_user_id': user_id}"
+                                help="All to-dos for this user">
+                            <field string="To-Dos" name="user_todo_count"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <group col="6" name="group_top">
+                        <group colspan="5" col="4" name="head">
+                            <field colspan="4" name="name"/>
+                            <field name="user_id"/>
+                            <field name="date_created" widget="date"
+                                   readonly="1" class="oe_inline"/>
+                        </group>
+                        <group colspan="3" name="group_left">
+                            <field name="data_deadline"/>
+                            <field name="effort_estimate"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
+                        <group colspan="3" name="group_right">
+                            <field name="is_done"/>
+                            <field name="active" readonly="1"/>
+                            <field name="desc"/>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Team" name="team_page">
+                            <field name="team_ids"/>
+                        </page>
+                        <page string="Dcumentation" name="doc_page">
+                            <field name="docs" widget="html"></field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_filter_todo_task" model="ir.ui.view">
         <field name="name">To-do Task Filter</field>
         <field name="model">todo.task</field>
         <field name="priority">15</field>
@@ -28,4 +101,27 @@
             </search>
         </field>
     </record>
+
+    <record id="view_calendar_todo_task" model="ir.ui.view">
+        <field name="name">To-do Task Calendar</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <calendar date_start="data_deadline" color="user_id">
+                <field name="name"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_graph_todo_task" model="ir.ui.view">
+        <field name="name">To-do Task graph</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <graph type="pie">
+                <field name="state"/>
+                <field name="effort_estimate" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
 </odoo>

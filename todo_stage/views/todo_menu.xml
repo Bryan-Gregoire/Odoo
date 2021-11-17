@@ -2,12 +2,16 @@
 
 <odoo>
     <act_window
-        id="show_tags"
-        name="To-do Tag"
-        res_model="todo.task.tag"
-        view_mode="tree, form"
-        context="{'default_name': 'Auto-Tag-'}"/>
+            id="show_tags"
+            name="To-do Tag"
+            res_model="todo.task.tag"
+            view_mode="tree,form"
+            context="{'default_name': 'Auto-Tag-'}"/>
 
     <menuitem id="menu_todo_task_tag" name="Tags" parent="todo_app.configuration_menu" action="show_tags"/>
 
+    <record id="todo_app.action_todo_task"
+            model="ir.actions.act_window">
+        <field name="view_mode">tree,form,calendar,graph</field>
+    </record>
 </odoo>
