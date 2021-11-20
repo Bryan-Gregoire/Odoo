@@ -1,9 +1,11 @@
-from odoo import models, fields
-from odoo.tools.populate import compute
+from odoo import models, fields, api
+
+from odoo.exceptions import ValidationError
 
 
 class TodoTask(models.Model):
-    _inherit = ['todo.task']
+    _name = 'todo.task'
+    _inherit = ['todo.task', 'mail.thread']
 
     tag_ids = fields.Many2many('todo.task.tag', string='Tags')
 
@@ -29,6 +31,17 @@ class TodoTask(models.Model):
 
     def _compute_user_todo_count(self):
         self.user_todo_count = self.search_count([('user_id', '=', self.user_id.id)])
+
+    @api.onchange('user_id')
+    def _onchange_responsible(self):
+        self.team_ids = None
+        return {'warning': {'title': "Warning", 'message': "Please choose a new Team", 'type': "notification"}, }
+
+    @api.constrains('name')
+    def _check_name_size(self):
+        for todo in self:
+            if len(todo.name) < 5:
+                raise ValidationError('Title must have 5 chars !')
 
     # def _compute_user_todo_count(self):
     #     for task in self:

@@ -1,30 +1,49 @@
 <odoo>
-    <data>
-<!--
-          <record id="object0" model="todo_stage.todo_stage">
-            <field name="name">Object 0</field>
-            <field name="value">0</field>
-          </record>
+    <data noupdate="1">
+        <record model="todo.task.tag" id="todo__task_tag__01">
+            <field name="name">Technical</field>
+        </record>
+        <record model="todo.task.tag" id="todo__task_tag__02">
+            <field name="name">Canceled</field>
+        </record>
+        <record model="todo.task.tag" id="todo__task_tag__03">
+            <field name="name">Urgent</field>
+        </record>
 
-          <record id="object1" model="todo_stage.todo_stage">
-            <field name="name">Object 1</field>
-            <field name="value">10</field>
-          </record>
+        <record model="res.partner" id="todo__partner__01">
+            <field name="name">Patrick Star</field>
+        </record>
+        <record model="res.partner" id="todo__partner__02">
+            <field name="name">Squidward Tentacles</field>
+        </record>
+        <record model="res.partner" id="todo__partner__03">
+            <field name="name">Sandy Cheeks</field>
+        </record>
 
-          <record id="object2" model="todo_stage.todo_stage">
-            <field name="name">Object 2</field>
-            <field name="value">20</field>
-          </record>
-
-          <record id="object3" model="todo_stage.todo_stage">
-            <field name="name">Object 3</field>
-            <field name="value">30</field>
-          </record>
-
-          <record id="object4" model="todo_stage.todo_stage">
-            <field name="name">Object 4</field>
-            <field name="value">40</field>
-          </record>
--->
+        <record model="todo.task" id="todo__task_task__001">
+            <field name="name">Reinstall Odoo</field>
+            <field name="user_id" search="[('login','=','eugene.krabs@he2b.be')]"/>
+            <field name="data_deadline" eval="(datetime.now() + timedelta(days=4))"/>
+            <field name="is_done">False</field>
+            <field name="effort_estimate">5</field>
+            <field name="state">draft</field>
+            <field name="desc">Reinstall ODOO and update to 14.0</field>
+            <field name="tag_ids"
+                   eval="[(4, ref('todo__task_tag__01'), None)]"/>
+            <field name="team_ids"
+                   eval="[(4, ref('todo__partner__01'), None), (4, ref('todo__partner__02'), None), (4, ref('todo__partner__03'), None)]"/>
+            <field name="image" type="base64" file="todo_stage/static/img/task04.png"/>
+            <field name="docs"><![CDATA[
+            <h2> Installation requirements</h2>
+            <br/>
+            <ul>
+                <li>postgres</li>
+                <li>python 3.5</li>
+                <li>less</li>
+                <li>WkHtmlToPdf</li>
+            </ul>
+                ]]>
+            </field>
+        </record>
     </data>
 </odoo>
